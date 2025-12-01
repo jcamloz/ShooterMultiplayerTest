@@ -10,15 +10,20 @@ using UnityEngine.SceneManagement;
 public class GestorDeEventos : MonoBehaviour, INetworkRunnerCallbacks
 {
     public GameObject jugador;
-    public Text mensaje;
-    private Dictionary<PlayerRef, NetworkObject> listaJugadores;
     private InputData inputData;
 
+    private ListaJugadoresController LJC;
+    private NetworkRunner red;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Awake()
     {
+        red = FindAnyObjectByType<NetworkRunner>();
+        red.AddCallbacks(this);
+
+        LJC = FindAnyObjectByType<ListaJugadoresController>();
+
         inputData = new InputData();
-        listaJugadores = new Dictionary<PlayerRef, NetworkObject>();
     }
 
     public void OnConnectedToServer(NetworkRunner runner)
@@ -102,28 +107,18 @@ public class GestorDeEventos : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        if(runner.IsServer)
-        {
-            //runner.Spawn(pelota, new Vector3(0, 3, 0), Quaternion.identity, player);
-            //NetworkObject p = runner.Spawn(jugador, new Vector3(UnityEngine.Random.Range(-10.0f, 10.0f), 2, UnityEngine.Random.Range(-10.0f, 10.0f)), Quaternion.identity, player);
-            
-            listaJugadores.Add(player, null);
-            
-            if(listaJugadores.Count == runner.SessionInfo.MaxPlayers && runner.IsSceneAuthority)
-            {
-                runner.UnloadScene(SceneRef.FromIndex(0));
-                runner.LoadScene(SceneRef.FromIndex(1));
-            }
-        }
-        mensaje.text = "Esperando..."+runner.ActivePlayers.Count()+"/"+runner.SessionInfo.MaxPlayers;
+
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-        if(runner.IsServer && listaJugadores.TryGetValue(player, out NetworkObject p))
+        if(runner.IsServer && LJC.listaSJ[runner.SessionInfo].TryGetValue(player, out NetworkObject p))
         {
-            runner.Despawn(p);
-            listaJugadores.Remove(player);
+            if(p!=null)
+            {
+                runner.Despawn(p);
+            }
+            LJC.listaSJ[runner.SessionInfo].Remove(player);
         }
     }
 
@@ -139,14 +134,14 @@ public class GestorDeEventos : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnSceneLoadDone(NetworkRunner runner)
     {
-        if(runner.IsServer && SceneManager.GetActiveScene().buildIndex==1)
+        if(runner.IsServer && SceneManager.GetActiveScene().buildIndex==2)
         {
-            foreach(PlayerRef pR in listaJugadores.Keys.ToList())
+            foreach(PlayerRef pR in LJC.listaSJ[runner.SessionInfo].Keys.ToList())
             {
-                if (listaJugadores[pR] == null)
+                if (LJC.listaSJ[runner.SessionInfo][pR] == null)
                 {
                     NetworkObject p = runner.Spawn(jugador, new Vector3(UnityEngine.Random.Range(9, -9), 2, UnityEngine.Random.Range(9, -9)), Quaternion.identity, pR);
-                    listaJugadores[pR] = p;
+                    LJC.listaSJ[runner.SessionInfo][pR] = p;
                 }
             }
         }

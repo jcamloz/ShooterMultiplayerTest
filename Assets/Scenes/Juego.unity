@@ -1744,6 +1744,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85483a8d25fdc314995bd432f45409cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OroController
+--- !u!1 &2084890424
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2084890426}
+  - component: {fileID: 2084890425}
+  m_Layer: 0
+  m_Name: ControlEscena
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2084890425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084890424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3747b273321431241b47c3932af79dcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GestorDeEventos
+  jugador: {fileID: 7836539066100802736, guid: 70e3dd2775658e54ea44db84bb6129fa, type: 3}
+--- !u!4 &2084890426
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084890424}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 486.03876, y: 299.8359, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1754,3 +1799,4 @@ SceneRoots:
   - {fileID: 1777072212}
   - {fileID: 1565406408}
   - {fileID: 1636572262}
+  - {fileID: 2084890426}
